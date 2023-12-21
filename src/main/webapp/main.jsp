@@ -19,13 +19,16 @@
                 <td>Results</td>
             </tr>
 
-            <tr>
-                <td class="canvas">
-                    <!--
-                    <img src = "img/desmos-graph.png" width="95%">
-                    -->
+            <tr >
+                <!--
+                <img src = "img/desmos-graph.png" width="95%">
+                -->
+                <td class = "draw">
+                    <input id="resize_slider" type="range" min="-20" max="30" value="0" class="slider" > <br>
+                    <canvas class="areas" id="graph" ></canvas>
+
                 </td>
-                <td>
+                <td class = "input">
                     <div>
                         <b>Input x:</b>
                         <div>
@@ -59,7 +62,7 @@
                     <div>
                         <b>Input R:</b>
                         <div>
-                            <input  type="text" pattern="[0-5]" name = "r_coordinate" class = "r">
+                            <input  type="text" pattern="[0-5]" name = "r_coordinate" class = "r" value = "3">
                         </div>
                     </div>
                     <div>
@@ -75,8 +78,10 @@
         </table>
 
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <!--<script src="js/draw.js"> </script>-->
+        <script src="js/draw.js"> </script>
         <script src ="js/validate.js"></script>
+
+
 
 
     </body>
