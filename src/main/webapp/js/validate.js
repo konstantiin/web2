@@ -1,10 +1,14 @@
-const slider = document.getElementById("resize_slider");
+let slider;
 let zoom = 1;
 let r_value = 3
-let r_selector = $(".r");
+let r_selector;
+let selected_x;
 let lastReq = null;
 $(document).ready(function(){
     redrawGraph(r_value, zoom);
+    r_selector = $(".r");
+    selected_x = $(".selected_x");
+    slider = document.getElementById("resize_slider");
 });
 function resize(){
     //alert(slider.value);
@@ -14,7 +18,7 @@ function resize(){
 
 slider.addEventListener("change",resize);
 
-let selected_x = $(".selected_x");
+
 
 $(".x").click(function() {
 

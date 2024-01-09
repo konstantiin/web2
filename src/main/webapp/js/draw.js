@@ -1,4 +1,5 @@
-const canvas = document.getElementById("graph"),
+let canvas, ctx
+        canvas = document.getElementById("graph"),
     ctx = canvas.getContext('2d');
 
 canvas.height *= 10;
@@ -150,8 +151,3 @@ function redrawGraph(rad, factor) {
         ctx.fillText(`(${lastReq.x}, ${lastReq.y})`, x + hatchWidth, y + 2*hatchWidth);
     }
 }
-
-
-
-
-
