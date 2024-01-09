@@ -2,14 +2,17 @@ const canvas = document.getElementById("graph"),
     ctx = canvas.getContext('2d');
 
 canvas.height *= 10;
-canvas.width *= 9;
+canvas.width *= 10;
 let w = canvas.width, h = canvas.height;
-
+let hatchGapHor, hatchGapVer;
+console.log(w);
+console.log(h);
 
 const baseHatchGap= w/16 ;
 
 
 function redrawGraph(rad, factor) {
+
     let hatchWidth = 15;
     if (factor < 0.4) hatchWidth = 10;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -40,7 +43,7 @@ function redrawGraph(rad, factor) {
 
     // hatches
     ctx.beginPath();
-    let hatchGapHor = ((w-100)/20)*factor;
+    hatchGapHor = ((w-100)/20)*factor;
     let c = w/2
     let cnt = 0;
     while (c < w){
@@ -60,7 +63,7 @@ function redrawGraph(rad, factor) {
         if (cnt === 10) break;
     }
     c = h/2
-    let hatchGapVer = ((h-100)/20)*factor;
+    hatchGapVer = ((h-100)/20)*factor;
     cnt = 0;
     while (c < h){
         ctx.moveTo(w / 2 - hatchWidth, c);
@@ -108,14 +111,14 @@ function redrawGraph(rad, factor) {
     while (label <= 5){
         let l = label.toString();
         if (l.length === 1) l = " " + l;
-        ctx.fillText(l, w / 2 + hatchWidth*1.5 , h / 2 + hatchGapVer*2*label+20 );
+        ctx.fillText(l, w / 2 + hatchWidth*1.5 , h / 2 - hatchGapVer*2*label+20 );
         label += 0.5;
     }
     label = -0.5;
     while (label >= -5){
         let l = label.toString();
         if (l.length === 2) l = " " + l;
-        ctx.fillText(l, w / 2 + hatchWidth*1.5, h / 2 + hatchGapVer*2*label +20);
+        ctx.fillText(l, w / 2 + hatchWidth*1.5, h / 2 - hatchGapVer*2*label +20);
         label -= 0.5;
     }
     if (rad !== 0){
@@ -134,26 +137,21 @@ function redrawGraph(rad, factor) {
         ctx.stroke();
         ctx.closePath();
     }
-
+    if (lastReq != null){
+        ctx.fillStyle = lastReq.inside ? "lime" : "red";
+        ctx.beginPath();
+        const x = w/2 + lastReq.x * hatchGapHor*2;
+        const y = h/2 - lastReq.y * hatchGapVer*2;
+        ctx.arc(x, y, hatchWidth, 0, 2 * Math.PI);
+        ctx.fill()
+        ctx.closePath();
+        ctx.fillStyle = "black";
+        ctx.font = ` ${axisFontSize}px Roboto`;
+        ctx.fillText(`(${lastReq.x}, ${lastReq.y})`, x + hatchWidth, y + 2*hatchWidth);
+    }
 }
 
-// draw graph with standard label
 
-function printDotOnGraph(xCenter, yCenter, isHit) {
 
-    ctx.fillStyle = isHit ? 'green' : 'red'
-    let x = w / 2 + xCenter * hatchGap * (2 / rValue) - 3, y = h / 2 - yCenter * hatchGap * (2 / rValue) - 3;
-    ctx.fillRect(x, y, hatchGap/10, hatchGap/10);
-}
-/*
-window.addEventListener('resize', (e)=>{
-        w=canvas.clientWidth;
-        h=canvas.clientHeight;
-});*/
-function getMousePosition(e) {
-    var rect = canvas.getBoundingClientRect();
 
-    var mouseX = e.offsetX * canvas.width / canvas.clientWidth | 0;
-    var mouseY = e.offsetY * canvas.height / canvas.clientHeight | 0;
-    return {x: mouseX, y: mouseY};
-}
+

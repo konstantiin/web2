@@ -29,44 +29,52 @@
 
                 </td>
                 <td class = "input">
-                    <div>
-                        <b>Input x:</b>
+                    <form id = "input_form" method = "post" onsubmit = "return validate()" action = "${pageContext.request.contextPath}/control">
                         <div>
-                            <input  type="button" name="x_coordinate" class="x" value="-4" ><br>
-                            <input  type="button" name="x_coordinate" class="x" value="-3"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="-2"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="-1"><br>
-                            <input  type="button" name="x_coordinate" class="x selected_x"  value="0"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="1"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="2"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="3"><br>
-                            <input  type="button" name="x_coordinate" class="x" value="4"><br>
+                            <b>Input x:</b>
+                            <div>
+                                <input type = "hidden" id = "x_value" name = "x_coordinate"  value="0">
+                                <input  type="button" class="x" value="-4" ><br>
+                                <input  type="button" class="x" value="-2"><br>
+                                <input  type="button" class="x" value="-3"><br>
+                                <input  type="button" class="x" value="-1"><br>
+                                <input  type="button" class="x selected_x"  value="0"><br>
+                                <input  type="button" class="x" value="1"><br>
+                                <input  type="button" class="x" value="2"><br>
+                                <input  type="button" class="x" value="3"><br>
+                                <input  type="button" class="x" value="4"><br>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <b>Input y:</b>
                         <div>
-                            <input  type="radio" name="y_coordinate" class="y" value="-5" > -5<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="-4"> -4<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="-3"> -3<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="-2"> -2<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="-1"> -1<br>
-                            <input  type="radio" name="y_coordinate" class="y" value= "0" checked> 0<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="1"> 1<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="2"> 2<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="3"> 3<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="4"> 4<br>
-                            <input  type="radio" name="y_coordinate" class="y" value="5"> 5<br>
+                            <b>Input y:</b>
+                            <div>
+                                <input  type="radio" name="y_coordinate" class="y" value="-5" > -5<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="-4"> -4<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="-3"> -3<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="-2"> -2<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="-1"> -1<br>
+                                <input  type="radio" name="y_coordinate" class="y" value= "0" checked> 0<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="1"> 1<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="2"> 2<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="3"> 3<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="4"> 4<br>
+                                <input  type="radio" name="y_coordinate" class="y" value="5"> 5<br>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <b>Input R:</b>
                         <div>
-                            <input  type="text" pattern="[0-5]" name = "r_coordinate" class = "r" value = "3">
+                            <b>Input R:</b>
+                            <div>
+                                <input  type="text" pattern="[0-5]" name = "r_coordinate" class = "r" value = "3">
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <input type="button" class = "submit" value="submit">
+                        <div>
+                            <input type="submit" value="check">
+                        </div>
+                    </form>
+                </td>
+                <td class = "logs" >
+                    <div >
+                        <jsp:include page="table.jsp" />
                     </div>
                 </td>
 
@@ -78,6 +86,7 @@
         </table>
 
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/dot.js"> </script>
         <script src="js/draw.js"> </script>
         <script src ="js/validate.js"></script>
 
