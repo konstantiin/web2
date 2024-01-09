@@ -4,12 +4,12 @@ let r_value = 3
 let r_selector;
 let selected_x;
 let lastReq = null;
-$(document).ready(function(){
-    redrawGraph(r_value, zoom);
-    r_selector = $(".r");
-    selected_x = $(".selected_x");
-    slider = document.getElementById("resize_slider");
-});
+
+redrawGraph(r_value, zoom);
+r_selector = $(".r");
+selected_x = $(".selected_x");
+slider = document.getElementById("resize_slider");
+
 function resize(){
     //alert(slider.value);
     zoom = 1 + slider.value/30;
@@ -85,7 +85,7 @@ function getCursorPosition(canvas, event) {
     console.log("x: " + x + " y: " + y)
     $.ajax({
         url: 'control',     method: "post",
-        data: "&x_coordinate=" + x + "&y_coordinate=" + y + "&r_coordinate=" + r_value + "&timezone=" + new Date().getTimezoneOffset(),
+        data: `&x_coordinate=${x}&y_coordinate=${y}&r_coordinate=${r_value}&timezone=${new Date().getTimezoneOffset()}`,
         dataType: "html",
 
         success: successful,
@@ -97,7 +97,6 @@ function getCursorPosition(canvas, event) {
 }
 canvas.addEventListener('mousedown', function(e) {
     e.preventDefault();
-    console.log("rfkvn");
     getCursorPosition(canvas, e)
 })
 $("#input_form").on("submit", function(event){
@@ -106,8 +105,7 @@ $("#input_form").on("submit", function(event){
     if(!validate()){
         return
     }
-    console.log("data sending...")
-    console.log($(this).serialize());
+
 
     $(".validate_button").attr("disabled", true);
     $.ajax({

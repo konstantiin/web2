@@ -1,5 +1,4 @@
-let canvas, ctx
-        canvas = document.getElementById("graph"),
+let canvas = document.getElementById("graph"),
     ctx = canvas.getContext('2d');
 
 canvas.height *= 10;
@@ -11,15 +10,7 @@ console.log(h);
 
 const baseHatchGap= w/16 ;
 
-
-function redrawGraph(rad, factor) {
-
-    let hatchWidth = 15;
-    if (factor < 0.4) hatchWidth = 10;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 4   ;
-    ctx.strokeStyle = 'black';
-
+function drawYAxis(){
     // y axis
     ctx.beginPath();
     ctx.moveTo(w / 2, 10);
@@ -30,7 +21,8 @@ function redrawGraph(rad, factor) {
     ctx.lineTo(w / 2, h);
     ctx.stroke();
     ctx.closePath();
-
+}
+function drawXAxis(){
     // x axis
     ctx.beginPath();
     ctx.moveTo(w-10, h / 2);
@@ -42,8 +34,8 @@ function redrawGraph(rad, factor) {
     ctx.stroke();
     ctx.closePath();
 
-    // hatches
-    ctx.beginPath();
+}
+function verticalHatches(hatchWidth, factor){
     hatchGapHor = ((w-100)/20)*factor;
     let c = w/2
     let cnt = 0;
@@ -63,9 +55,11 @@ function redrawGraph(rad, factor) {
         cnt++;
         if (cnt === 10) break;
     }
-    c = h/2
+}
+function horizontalHatches(hatchWidth, factor){
+    let c = h/2
     hatchGapVer = ((h-100)/20)*factor;
-    cnt = 0;
+    let cnt = 0;
     while (c < h){
         ctx.moveTo(w / 2 - hatchWidth, c);
         ctx.lineTo(w / 2 + hatchWidth, c);
@@ -83,17 +77,8 @@ function redrawGraph(rad, factor) {
         if (cnt === 10) break;
     }
     ctx.stroke();
-    ctx.closePath();
-
-
-    // print labels
-    const axisFontSize = baseHatchGap/5;
-    ctx.fillStyle = 'black';
-
-    ctx.font = ` ${axisFontSize * 1.4}px Roboto`;
-    ctx.fillText('y', w / 2 - hatchWidth * 2.8, 40)
-    ctx.fillText('x', w - 40, h / 2 - hatchWidth * 2.4)
-    ctx.font = ` ${axisFontSize}px Roboto`;
+}
+function drawLabels(hatchWidth){
     let label = 0.5;
     while (label <= 5){
         let l = label.toString();
@@ -122,32 +107,67 @@ function redrawGraph(rad, factor) {
         ctx.fillText(l, w / 2 + hatchWidth*1.5, h / 2 - hatchGapVer*2*label +20);
         label -= 0.5;
     }
+}
+function drawCircle(rad){
+    ctx.fillStyle = 'rgba(80,92,236,0.33)';
+    ctx.beginPath();
+    ctx.moveTo(w/2, h/2);
+    ctx.lineTo(w/2 + hatchGapHor*rad*2, h/2);
+    ctx.lineTo(w/2, h/2 - hatchGapVer*rad*2);
+    ctx.lineTo(w/2, h/2 - hatchGapVer*rad);
+    ctx.lineTo(w/2 - hatchGapHor*rad*2,h/2 - hatchGapVer*rad);
+    ctx.lineTo(w/2 - hatchGapHor*rad*2,h/2);
+    ctx.ellipse(w/2, h/2, hatchGapHor*rad*2, hatchGapVer*rad*2, 0, Math.PI, Math.PI / 2, true);
+    ctx.lineTo(w/2,h/2);
+    ctx.fill();
+    ctx.strokeStyle = '#0115fd';
+    ctx.stroke();
+    ctx.closePath();
+}
+function drawDot(hatchWidth, axisFontSize){
+    ctx.fillStyle = lastReq.inside ? "lime" : "red";
+    ctx.beginPath();
+    const x = w/2 + lastReq.x * hatchGapHor*2;
+    const y = h/2 - lastReq.y * hatchGapVer*2;
+    ctx.arc(x, y, hatchWidth, 0, 2 * Math.PI);
+    ctx.fill()
+    ctx.closePath();
+    ctx.fillStyle = "black";
+    ctx.font = ` ${axisFontSize}px Roboto`;
+    ctx.fillText(`(${lastReq.x}, ${lastReq.y})`, x + hatchWidth, y + 2*hatchWidth);
+}
+function redrawGraph(rad, factor) {
+
+    let hatchWidth = 15;
+    if (factor < 0.4) hatchWidth = 10;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 4   ;
+    ctx.strokeStyle = 'black';
+
+    drawYAxis();
+    drawXAxis();
+
+    // hatches
+    ctx.beginPath();
+    verticalHatches(hatchWidth, factor);
+    horizontalHatches(hatchWidth, factor);
+    ctx.closePath();
+
+
+    // print labels
+    const axisFontSize = baseHatchGap/5;
+    ctx.fillStyle = 'black';
+    ctx.font = ` ${axisFontSize * 1.4}px Roboto`;
+    ctx.fillText('y', w / 2 - hatchWidth * 2.8, 40);
+    ctx.fillText('x', w - 40, h / 2 - hatchWidth * 2.4);
+    ctx.font = ` ${axisFontSize}px Roboto`;
+    drawLabels(hatchWidth);
+
+
     if (rad !== 0){
-        ctx.fillStyle = 'rgba(80,92,236,0.33)';
-        ctx.beginPath();
-        ctx.moveTo(w/2, h/2);
-        ctx.lineTo(w/2 + hatchGapHor*rad*2, h/2);
-        ctx.lineTo(w/2, h/2 - hatchGapVer*rad*2);
-        ctx.lineTo(w/2, h/2 - hatchGapVer*rad);
-        ctx.lineTo(w/2 - hatchGapHor*rad*2,h/2 - hatchGapVer*rad);
-        ctx.lineTo(w/2 - hatchGapHor*rad*2,h/2);
-        ctx.ellipse(w/2, h/2, hatchGapHor*rad*2, hatchGapVer*rad*2, 0, Math.PI, Math.PI / 2, true);
-        ctx.lineTo(w/2,h/2);
-        ctx.fill();
-        ctx.strokeStyle = '#0115fd';
-        ctx.stroke();
-        ctx.closePath();
+        drawCircle(rad);
     }
     if (lastReq != null){
-        ctx.fillStyle = lastReq.inside ? "lime" : "red";
-        ctx.beginPath();
-        const x = w/2 + lastReq.x * hatchGapHor*2;
-        const y = h/2 - lastReq.y * hatchGapVer*2;
-        ctx.arc(x, y, hatchWidth, 0, 2 * Math.PI);
-        ctx.fill()
-        ctx.closePath();
-        ctx.fillStyle = "black";
-        ctx.font = ` ${axisFontSize}px Roboto`;
-        ctx.fillText(`(${lastReq.x}, ${lastReq.y})`, x + hatchWidth, y + 2*hatchWidth);
+        drawDot(hatchWidth, axisFontSize);
     }
 }
