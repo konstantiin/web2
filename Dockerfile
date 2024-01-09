@@ -3,6 +3,6 @@
 #CMD /opt/jboss/wildfly/bin/standalone.sh
 
 FROM quay.io/wildfly/wildfly
-COPY web_sjp.war /opt/jboss/wildfly/standalone/deployments
+COPY out/artifacts/TEST/TEST.war /opt/jboss/wildfly/standalone/deployments
 
 
